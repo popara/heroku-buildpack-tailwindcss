@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+set -e
+
+function message {
+  echo "$1"
+  sync
+}
+
+# https://devcenter.heroku.com/articles/buildpack-api
+export_env_dir() {
+  env_dir=$1
+  message "-----> ENV_DIR is $env_dir"
+  whitelist_regex=${2:-''}
+  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  if [ -d "$env_dir" ]; then
+    for e in $(ls $env_dir); do
+      message "-----> ENV_DIR contains file $e"
+      echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+      export "$e=$(cat $env_dir/$e)"
+      :
+    done
+  fi
+}
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+export_env_dir $ENV_DIR
+
+# config
+VERSION="v1.4.0"
+
+# package
+FILE_NAME="dbxcli-linux-amd64"
+DBXCLI_ARCHIVE="https://github.com/dropbox/dbxcli/releases/download/${VERSION}/${FILE_NAME}"
+
+mkdir -p $CACHE_DIR
+if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
+  echo "-----> Fetching dbxcli binaries from ${DBXCLI_ARCHIVE}"
+  curl --retry 3 $DBXCLI_ARCHIVE -s -L -o $CACHE_DIR/$FILE_NAME
+  chmod +x $CACHE_DIR/$FILE_NAME
+fi
+
+echo "-----> Creating dbxcli symlink"
+mkdir -p $BUILD_DIR/bin
+cd $BUILD_DIR/bin
+cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/bin/dbxcli
+
+# auth.json
+echo "-----> Generating auth.json"
+if [ -n "${DROPBOX_AUTH_TOKEN}" ]; then
+  mkdir -p "$BUILD_DIR/.config/dbxcli"
+  echo -n "{\"\":{\"personal\":\"${DROPBOX_AUTH_TOKEN}\"}}" > "$BUILD_DIR/.config/dbxcli/auth.json"
+  chmod 600 "$BUILD_DIR/.config/dbxcli/auth.json"
+else
+  echo "       !!!! DROPBOX_AUTH_TOKEN not set"
+  echo "       !!!!   Try heroku config:add DROPBOX_AUTH_TOKEN=<your token>"
+  echo "       !!!!   See https://www.dropbox.com/developers/reference/oauth-guide"
+  exit 1
+fi
+

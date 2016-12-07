@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "dbxcli"
+exit 0
