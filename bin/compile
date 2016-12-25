@@ -43,10 +43,9 @@ if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
   chmod +x $CACHE_DIR/$FILE_NAME
 fi
 
-echo "-----> Creating dbxcli symlink"
-mkdir -p $BUILD_DIR/bin
-cd $BUILD_DIR/bin
-cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/bin/dbxcli
+echo "-----> Copying dbxcli binary"
+mkdir -p $BUILD_DIR/vendor/dbxcli/bin
+cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor/dbxcli/bin/dbxcli
 
 # auth.json
 echo "-----> Generating auth.json"
