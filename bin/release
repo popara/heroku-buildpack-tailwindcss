@@ -3,5 +3,6 @@
 cat << EOF
 ---
 config_vars:
-  PATH: /app/bin:/usr/local/bin:/usr/bin:/bin
+  PATH: $PATH:/app/vendor/dbxcli/bin
 EOF
+
