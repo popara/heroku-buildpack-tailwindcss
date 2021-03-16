@@ -30,7 +30,7 @@ ENV_DIR=$3
 export_env_dir $ENV_DIR
 
 # config
-VERSION="v1.4.0"
+VERSION="v3.0.0"
 
 # package
 FILE_NAME="dbxcli-linux-amd64"
