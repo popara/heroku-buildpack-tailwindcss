@@ -34,8 +34,7 @@ VERSION="0.19.1"
 
 # package
 FILE_NAME="elm"
-ARCIVE_NAME="binary-for-linux-64-bit.gz"
-ELM_BIN="https://github.com/elm/compiler/releases/download/$VERSION/$ARCIVE_NAME"
+ELM_BIN="https://github.com/elm/compiler/releases/download/$VERSION/binary-for-linux-64-bit.gz"
 ZIP_PATH="$CACHE_DIR/$FILE_NAME.gz"
 mkdir -p $CACHE_DIR
 
@@ -49,4 +48,5 @@ fi
 echo "-----> Copying Elm binary"
 mkdir -p $BUILD_DIR/vendor
 cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor
+echo "-----> Elm Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
 
