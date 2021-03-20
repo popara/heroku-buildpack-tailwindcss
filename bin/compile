@@ -26,27 +26,37 @@ export_env_dir() {
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
+BP_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
 
 export_env_dir $ENV_DIR
 
 # config
-VERSION="0.19.1"
+VERSION=${ELM_VERSION:"0.19.1"}
 
 # package
 FILE_NAME="elm"
 ELM_BIN="https://github.com/elm/compiler/releases/download/$VERSION/binary-for-linux-64-bit.gz"
-ZIP_PATH="$CACHE_DIR/$FILE_NAME.gz"
+ZIP_PATH="./$FILE_NAME.gz"
 mkdir -p $CACHE_DIR
 
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
-  echo "-----> Fetching Elm binaries from ${ELM_BIN}"
+  echo "-----> Fetching Elm binaries "
+  echo "       from: ${ELM_BIN}"
   curl --retry 3 $ELM_BIN -s -L -o $ZIP_PATH
-  gunzip $ZIP_PATH
   chmod +x $CACHE_DIR/$FILE_NAME
 fi
+echo "------> Unziping Cached Binary"
+gunzip $CACHE_DIR/$FILE_NAME
 
 echo "-----> Copying Elm binary"
 mkdir -p $BUILD_DIR/vendor
 cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor
 echo "-----> Elm Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
 
+# only write the export script if the buildpack directory is writable.
+# this may occur in situations outside of Heroku, such as running the
+# buildpacks locally.
+if [ -w "$bp_dir" ]; then
+  echo "export PATH=\"$build_dir:\$PATH\"" > "$bp_dir/export"
+fi
+echo "------> Elm exported to \$PATH"
