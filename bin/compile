@@ -15,7 +15,7 @@ export_env_dir() {
   blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
   if [ -d "$env_dir" ]; then
     for e in $(ls $env_dir); do
-      message "-----> ENV_DIR contains file $e"
+      #E message "-----> ENV_DIR contains file $e"
       echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
       export "$e=$(cat $env_dir/$e)"
       :
@@ -40,18 +40,18 @@ ZIP_PATH="./$FILE_NAME.gz"
 mkdir -p $CACHE_DIR
 
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
-  echo "-----> Fetching Elm binaries "
-  echo "       from: ${ELM_BIN}"
+  message "-----> Fetching Elm binaries "
+  message "       from: ${ELM_BIN}"
   curl --retry 3 $ELM_BIN -s -L -o $ZIP_PATH
   chmod +x $CACHE_DIR/$FILE_NAME
 fi
-echo "------> Unziping Cached Binary"
+message "------> Unziping Cached Binary"
 gunzip $CACHE_DIR/$FILE_NAME
 
-echo "-----> Copying Elm binary"
+message "-----> Copying Elm binary"
 mkdir -p $BUILD_DIR/vendor
 cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor
-echo "-----> Elm Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
+message "-----> Elm Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
 
 # only write the export script if the buildpack directory is writable.
 # this may occur in situations outside of Heroku, such as running the
@@ -59,4 +59,4 @@ echo "-----> Elm Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
 if [ -w "$bp_dir" ]; then
   echo "export PATH=\"$build_dir:\$PATH\"" > "$bp_dir/export"
 fi
-echo "------> Elm exported to \$PATH"
+message "------> Elm exported to \$PATH"
