@@ -30,20 +30,20 @@ ENV_DIR=$3
 export_env_dir $ENV_DIR
 
 # config
-VERSION="1.6"
+VERSION="0.19.1"
 
 # package
-JQ_BIN="https://github.com/stedolan/jq/releases/download/jq-$VERSION/jq-linux64"
-FILE_NAME="jq"
+ELM_BIN="https://github.com/elm/compiler/releases/download/$VERSION/binary-for-linux-64-bit.gz"
+FILE_NAME="elm"
 mkdir -p $CACHE_DIR
 
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
-  echo "-----> Fetching jq binaries from ${JQ_BIN}"
-  curl --retry 3 $JQ_BIN -s -L -o $CACHE_DIR/$FILE_NAME
+  echo "-----> Fetching Elm binaries from ${ELM_BIN}"
+  curl --retry 3 $ELM_BIN -s -L -o $CACHE_DIR/$FILE_NAME
   chmod +x $CACHE_DIR/$FILE_NAME
 fi
 
-echo "-----> Copying jq binary"
+echo "-----> Copying Elm binary"
 mkdir -p $BUILD_DIR/vendor
 cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor
 

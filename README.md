@@ -1,7 +1,7 @@
-Heroku buildpack: jq
+Heroku buildpack: Elm
 =======================
 
-This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) of [jq](https://stedolan.github.io/jq/).
+This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) of [elm](https://elm-lang.org/).
 
 Usage
 -----
@@ -9,7 +9,7 @@ Usage
 Example usage:
 
     [your app]
-    $ heroku buildpacks:add 1 http://github.com/faircapital/heroku-buildpack-jq.git
+    $ heroku buildpacks:add 1 http://github.com/faircapital/heroku-buildpack-elm.git
     
     
 
