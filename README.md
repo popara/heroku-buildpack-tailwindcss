@@ -1,7 +1,7 @@
-Heroku buildpack: Dropbox CLI (dbxcli)
+Heroku buildpack: jq
 =======================
 
-This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) of [Dropbox CLI (dbxcli)](https://github.com/dropbox/dbxcli).
+This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) of [jq](https://stedolan.github.io/jq/).
 
 Usage
 -----
@@ -9,8 +9,7 @@ Usage
 Example usage:
 
     [your app]
-    $ heroku create --buildpack http://github.com/mallowlabs/heroku-buildpack-dbxcli.git
-    $ heroku config:add DROPBOX_AUTH_TOKEN=<your token>
-    $ git push heroku master
-    $ heroku run dbxcli ls
+    $ heroku buildpacks:add 1 http://github.com/faircapital/heroku-buildpack-jq.git
+    
+    
 

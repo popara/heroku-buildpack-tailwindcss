@@ -3,6 +3,6 @@
 cat << EOF
 ---
 config_vars:
-  PATH: $PATH:/app/vendor/dbxcli/bin
+  PATH: $PATH:/app/vendor/jq
 EOF
 

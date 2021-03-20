@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo "dbxcli"
+echo "jq"
 exit 0
