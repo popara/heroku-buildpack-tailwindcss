@@ -33,13 +33,16 @@ export_env_dir $ENV_DIR
 VERSION="0.19.1"
 
 # package
-ELM_BIN="https://github.com/elm/compiler/releases/download/$VERSION/binary-for-linux-64-bit.gz"
 FILE_NAME="elm"
+ARCIVE_NAME="binary-for-linux-64-bit.gz"
+ELM_BIN="https://github.com/elm/compiler/releases/download/$VERSION/$ARCIVE_NAME"
+ZIP_PATH="$CACHE_DIR/$FILE_NAME.gz"
 mkdir -p $CACHE_DIR
 
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
   echo "-----> Fetching Elm binaries from ${ELM_BIN}"
-  curl --retry 3 $ELM_BIN -s -L -o $CACHE_DIR/$FILE_NAME
+  curl --retry 3 $ELM_BIN -s -L -o $ZIP_PATH
+  gunzip $ZIP_PATH
   chmod +x $CACHE_DIR/$FILE_NAME
 fi
 
