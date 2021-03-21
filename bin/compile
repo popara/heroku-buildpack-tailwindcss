@@ -39,19 +39,20 @@ ELM_BIN="https://github.com/elm/compiler/releases/download/$VERSION/binary-for-l
 ZIP_PATH="$FILE_NAME.gz"
 mkdir -p $CACHE_DIR
 
-if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
+if ! [ -e $CACHE_DIR/$ZIP_PATH ]; then
   message "-----> Fetching Elm binaries "
   message "       from: ${ELM_BIN}"
   curl --retry 3 $ELM_BIN -s -L -o $ZIP_PATH
-  
+  message "------> Unziping Binary"
+  gunzip $ZIP_PATH
+  chmod +x $FILE_NAME
+  message "-----> Copying Elm binary to Cache"
+  cp $FILE_NAME $CACHE_DIR
 fi
-message "------> Unziping Cached Binary"
-gunzip $ZIP_PATH
-chmod +x $FILE_NAME
 
-message "-----> Copying Elm binary"
+
 mkdir -p $BUILD_DIR/vendor
-cp -f $FILE_NAME $BUILD_DIR/vendor
+cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor
 message "-----> Elm Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
 
 # only write the export script if the buildpack directory is writable.
