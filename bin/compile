@@ -30,21 +30,18 @@ BP_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
 
 export_env_dir $ENV_DIR
 
-# config
-VERSION=${ELM_VERSION:"0.19.1"}
-
 # package
+
 FILE_NAME="elm"
-ELM_BIN="https://github.com/elm/compiler/releases/download/$VERSION/binary-for-linux-64-bit.gz"
-ZIP_PATH="$FILE_NAME.gz"
 mkdir -p $CACHE_DIR
 
-if ! [ -e $CACHE_DIR/$ZIP_PATH ]; then
+if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
   message "-----> Fetching Elm binaries "
   message "       from: ${ELM_BIN}"
-  curl --retry 3 $ELM_BIN -s -L -o $ZIP_PATH
+  curl --retry 3 -L -o "$FILE_NAME.gz" https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz
+
   message "------> Unziping Binary"
-  gunzip $ZIP_PATH
+  gunzip "$FILE_NAME.gz"
   chmod +x $FILE_NAME
   message "-----> Copying Elm binary to Cache"
   cp $FILE_NAME $CACHE_DIR
