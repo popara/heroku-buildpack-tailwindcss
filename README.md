@@ -1,7 +1,7 @@
-Heroku buildpack: Elm
+Heroku buildpack: TailwindCss
 =======================
 
-This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) of [elm](https://elm-lang.org/).
+This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) of [Tailwindcss](https://tailwindcss.com/).
 
 Usage
 -----
@@ -9,7 +9,8 @@ Usage
 Example usage:
 
     [your app]
-    $ heroku buildpacks:add 1 http://github.com/faircapital/heroku-buildpack-elm.git
+    $ heroku buildpacks:add 1 http://github.com/popara/heroku-buildpack-tailwindcss.git
+   
     
     
 
