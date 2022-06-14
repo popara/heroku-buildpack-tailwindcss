@@ -32,25 +32,24 @@ export_env_dir $ENV_DIR
 
 # package
 
-FILE_NAME="elm"
+FILE_NAME=tailwindcss
 mkdir -p $CACHE_DIR
+TAILWIND_VER=3.2.1
 
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
-  message "-----> Fetching Elm binaries "
-  message "       from: ${ELM_BIN}"
-  curl --retry 3 -L -o "$FILE_NAME.gz" https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz
+  message "-----> Fetching Tailwindcss binaries version $TAILWIND_VER"
 
-  message "------> Unziping Binary"
-  gunzip "$FILE_NAME.gz"
-  chmod +x $FILE_NAME
-  message "-----> Copying Elm binary to Cache"
+  curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v${TAILWIND_VER}/tailwindcss-linux-x64
+	chmod +x tailwindcss-linux-x64
+	mv tailwindcss-linux-x64 $FILE_NAME
+  message "-----> Copying binary to Cache"
   cp $FILE_NAME $CACHE_DIR
 fi
 
 
 mkdir -p $BUILD_DIR/vendor
 cp -f $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor
-message "-----> Elm Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
+message "-----> Tailwind Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
 
 # only write the export script if the buildpack directory is writable.
 # this may occur in situations outside of Heroku, such as running the
@@ -58,4 +57,4 @@ message "-----> Elm Buildpack saved at $BUILD_DIR/vendor/$FILE_NAME"
 if [ -w "$bp_dir" ]; then
   echo "export PATH=\"$build_dir/vendor:\$PATH\"" > "$bp_dir/export"
 fi
-message "------> Elm exported to \$PATH"
+message "------> Tailwindcss exported to \$PATH"
