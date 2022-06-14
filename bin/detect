@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo "elm"
+echo "tailwindcss"
 exit 0
