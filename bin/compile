@@ -32,7 +32,7 @@ export_env_dir $ENV_DIR
 
 # package
 
-FILE_NAME=tailwindcss
+FILE_NAME=tailwindcsscli
 mkdir -p $CACHE_DIR
 TAILWIND_VER=3.2.1
 
